@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { lyra_backend } from 'declarations/lyra_backend';
+import { useState } from "react";
+import { lyra_backend } from "declarations/lyra_backend";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [greeting, setGreeting] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -17,6 +17,7 @@ function App() {
     <main>
       <img src="/logo2.svg" alt="DFINITY logo" />
       <br />
+      <h1 className="text-3xl text-red-100">Welcome to Lyra</h1>
       <br />
       <form action="#" onSubmit={handleSubmit}>
         <label htmlFor="name">Enter your name: &nbsp;</label>
