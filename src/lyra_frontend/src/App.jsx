@@ -3,10 +3,6 @@ import { idlFactory, canisterId } from "../../declarations/lyra_backend";
 import { useAuthClient } from "./lib/use-auth-client";
 import { Button } from "@/components/ui/button";
 
-/**
- *
- * @returns app
- */
 function App() {
   const identityProvider =
     // eslint-disable-next-line no-undef
@@ -70,6 +66,8 @@ function App() {
         </button>
         <section id="whoami">{whoamiText.toString()}</section>
       </section>
+
+      <ChatLog />
     </main>
   );
 }
