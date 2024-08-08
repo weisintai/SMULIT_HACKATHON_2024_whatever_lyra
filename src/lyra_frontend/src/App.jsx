@@ -1,14 +1,38 @@
 import { useState } from "react";
-import { lyra_backend } from "declarations/lyra_backend";
+import { idlFactory, canisterId } from "../../declarations/lyra_backend";
+import { useAuthClient } from "./lib/use-auth-client";
 import { Button } from "@/components/ui/button";
 
+/**
+ *
+ * @returns app
+ */
 function App() {
+  const identityProvider =
+    // eslint-disable-next-line no-undef
+    process.env.DFX_NETWORK === "local"
+      ? // eslint-disable-next-line no-undef
+        `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:4943`
+      : "https://identity.ic0.app";
+
+  const { isAuthenticated, login, logout, actor } = useAuthClient({
+    loginOptions: {
+      identityProvider,
+    },
+    actorOptions: {
+      canisterId,
+      idlFactory,
+    },
+  });
+
   const [greeting, setGreeting] = useState("");
+  const [whoamiText, setWhoamiText] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
     const name = event.target.elements.name.value;
-    lyra_backend.greet(name).then((greeting) => {
+
+    actor.greet(name).then((greeting) => {
       setGreeting(greeting);
     });
     return false;
@@ -18,8 +42,6 @@ function App() {
     <main>
       <img src="/logo2.svg" alt="DFINITY logo" />
       <br />
-      <Button variant="outline">Button</Button>
-      <h1 className="text-3xl text-red-100 font-medium">Welcome to Lyra</h1>
       <br />
       <form action="#" onSubmit={handleSubmit}>
         <label htmlFor="name">Enter your name: &nbsp;</label>
@@ -27,6 +49,27 @@ function App() {
         <button type="submit">Click Me!</button>
       </form>
       <section id="greeting">{greeting}</section>
+      <hr />
+      <section id="login-section">
+        <h2>Log in and test your identity</h2>
+        <Button id="login" onClick={login}>
+          Login with Internet Identity
+        </Button>
+        <button id="logout" onClick={logout}>
+          logout
+        </button>
+        <p>{isAuthenticated ? "You are logged in" : "You are not logged in"}</p>
+        <button
+          onClick={async () => {
+            console.log(actor);
+            const whoami = await actor.whoami();
+            setWhoamiText(whoami);
+          }}
+        >
+          Whoami
+        </button>
+        <section id="whoami">{whoamiText.toString()}</section>
+      </section>
     </main>
   );
 }
