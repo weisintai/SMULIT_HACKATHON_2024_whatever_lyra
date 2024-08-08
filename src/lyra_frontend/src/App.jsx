@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { lyra_backend } from "declarations/lyra_backend";
+import { Button } from "@/components/ui/button";
 
 function App() {
   const [greeting, setGreeting] = useState("");
@@ -17,7 +18,8 @@ function App() {
     <main>
       <img src="/logo2.svg" alt="DFINITY logo" />
       <br />
-      <h1 className="text-3xl text-red-100">Welcome to Lyra</h1>
+      <Button variant="outline">Button</Button>
+      <h1 className="text-3xl text-red-100 font-medium">Welcome to Lyra</h1>
       <br />
       <form action="#" onSubmit={handleSubmit}>
         <label htmlFor="name">Enter your name: &nbsp;</label>
