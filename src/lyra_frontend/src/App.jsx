@@ -2,6 +2,11 @@ import { useState } from "react";
 import { lyra_backend } from "declarations/lyra_backend";
 import { Button } from "@/components/ui/button";
 
+
+import ChatLog from './components/chatLog.jsx';
+
+
+
 function App() {
   const [greeting, setGreeting] = useState("");
 
@@ -27,6 +32,8 @@ function App() {
         <button type="submit">Click Me!</button>
       </form>
       <section id="greeting">{greeting}</section>
+
+      <ChatLog/>
     </main>
   );
 }
