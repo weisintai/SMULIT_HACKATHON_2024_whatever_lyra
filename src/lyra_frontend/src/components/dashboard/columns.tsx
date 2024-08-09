@@ -36,20 +36,6 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
     accessorKey: "timestamp",
     header: ({ column }) => {
       return (
@@ -80,5 +66,23 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: "text",
     header: "Text",
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const status: string = row.getValue("status");
+      return <div className="py-2 px-4">{status.toUpperCase()}</div>;
+    },
   },
 ];
