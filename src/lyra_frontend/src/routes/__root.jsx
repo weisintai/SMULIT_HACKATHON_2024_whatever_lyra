@@ -3,6 +3,7 @@ import {
   Link,
   Outlet,
   useRouter,
+  useNavigate,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Button } from "@/components/ui/button";
@@ -14,8 +15,8 @@ export const Route = createRootRoute({
 });
 
 const Root = () => {
-  const router = useRouter();
   const { authenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -32,7 +33,7 @@ const Root = () => {
           <Button
             onClick={async () => {
               await logout();
-              router.history.push("/login");
+              navigate({ to: "/login" });
             }}
           >
             Logout
