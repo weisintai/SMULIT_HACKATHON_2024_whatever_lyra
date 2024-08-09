@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQueryCall } from "@/lib/actor";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/actor";
 
 import { DataTable } from "@/components/dashboard/data-table";
 import { columns } from "@/components/dashboard/columns";
@@ -12,6 +13,11 @@ export const Route = createFileRoute("/dashboard")({
 const Dashboard = () => {
   const [consentToDataCollection, setConsentToDataCollection] = useState(null);
   const [userInputData, setUserInputData] = useState([]);
+  const { authenticated, identity } = useAuth();
+
+  if (identity !== null && !authenticated) {
+    navigate({ to: "/login", search: { redirect: "/chat" } });
+  }
 
   const { call, data, error } = useQueryCall({
     functionName: "getUserData",
