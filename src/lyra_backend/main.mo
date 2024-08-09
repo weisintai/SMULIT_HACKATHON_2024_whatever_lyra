@@ -1,7 +1,6 @@
 import Principal "mo:base/Principal";
 import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
-import Debug "mo:base/Debug";
 
 actor {
   type UserData = {
