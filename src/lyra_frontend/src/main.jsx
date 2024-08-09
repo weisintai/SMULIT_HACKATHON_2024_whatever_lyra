@@ -2,6 +2,7 @@ import React, { StrictMode, createContext, useContext } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { useAuth, AuthProvider, AuthContext } from "./hooks/useAuth";
+import "./index.css";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
