@@ -23,11 +23,11 @@ const Chat = () => {
   const { authenticated, identity } = useAuth();
   const navigate = useNavigate();
   const [isNewUser, setIsNewUser] = useState(false);
-  const [consentToDataCollection, setConsentToDataCollection] = useState(0);
+  const [consentToDataCollection, setConsentToDataCollection] = useState(0n);
 
   const { call, data, loading, error } = useQueryCall({
     functionName: "getUserData",
-    refetchOnMount: true,
+    refetchOnMount: false,
     onSuccess: (data) => {
       setIsNewUser(data.length === 0);
 
@@ -37,7 +37,10 @@ const Chat = () => {
     },
   });
 
-  const { call: consentToDataCollectionCall } = useUpdateCall({
+  const {
+    call: consentToDataCollectionCall,
+    loading: consentToDataCollectionUpdating,
+  } = useUpdateCall({
     functionName: "createUser",
     args: [consentToDataCollection],
   });
@@ -54,10 +57,6 @@ const Chat = () => {
         ) : (
           <>
             <h3>Welcome Chat! </h3>
-            <p>
-              Your consent to data collection is{" "}
-              {consentToDataCollection.toString()}
-            </p>
           </>
         )}
       </div>
@@ -74,10 +73,10 @@ const Chat = () => {
             <AlertDialogFooter>
               <AlertDialogCancel asChild>
                 <Button
+                  disabled={consentToDataCollectionUpdating}
                   variant="secondary"
                   onClick={() => {
-                    setIsNewUser(false);
-                    setConsentToDataCollection(0);
+                    setConsentToDataCollection(0n);
                     consentToDataCollectionCall();
                     call();
                   }}
@@ -87,10 +86,11 @@ const Chat = () => {
               </AlertDialogCancel>
               <AlertDialogAction asChild>
                 <Button
+                  disabled={consentToDataCollectionUpdating}
                   variant="primary"
                   onClick={() => {
-                    setIsNewUser(false);
-                    setConsentToDataCollection(1);
+                    setConsentToDataCollection(1n);
+                    console.log(consentToDataCollection);
                     consentToDataCollectionCall();
                     call();
                   }}
