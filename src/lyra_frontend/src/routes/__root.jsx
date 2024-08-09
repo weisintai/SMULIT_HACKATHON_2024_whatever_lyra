@@ -20,28 +20,33 @@ const Root = () => {
 
   return (
     <>
-      <div className="p-2 flex gap-2 justify-between">
-        <div className="flex gap-2">
-          <Link to="/chat" className="[&.active]:font-bold">
-            Chat
-          </Link>
-          <Link to="/dashboard" className="[&.active]:font-bold">
-            Dashboard
-          </Link>
-        </div>
-        {authenticated && (
-          <Button
-            onClick={async () => {
-              await logout();
-              navigate({ to: "/login" });
-            }}
-          >
-            Logout
-          </Button>
-        )}
-      </div>
+      {authenticated ? (
+        <>
+          <div className="p-2 flex gap-2 justify-between">
+            <div className="flex gap-2">
+              <Link to="/chat" className="[&.active]:font-bold">
+                Chat
+              </Link>
+              <Link to="/dashboard" className="[&.active]:font-bold">
+                Dashboard
+              </Link>
+            </div>
 
-      <Outlet />
+            <Button
+              onClick={async () => {
+                await logout();
+                navigate({ to: "/login" });
+              }}
+            >
+              Logout
+            </Button>
+          </div>
+
+          <Outlet />
+        </>
+      ) : (
+        <Outlet />
+      )}
     </>
   );
 };
