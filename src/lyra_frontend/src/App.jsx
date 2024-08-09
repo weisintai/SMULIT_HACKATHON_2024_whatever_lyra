@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { idlFactory, canisterId } from "../../declarations/lyra_backend";
 import { useAuthClient } from "./lib/use-auth-client";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
 
 function App() {
@@ -41,6 +41,7 @@ function App() {
   });
 
   const [whoamiText, setWhoamiText] = useState("");
+  const [fetching, setFetching] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -51,10 +52,31 @@ function App() {
   });
 
   async function onSubmit(data) {
-    console.log(data);
+    setFetching(true);
     const res = await actor.saveUserData(data);
-    console.log(res);
+    setFetching(false);
   }
+
+  useEffect(() => {
+    async function fetchData() {
+      if (isAuthenticated && actor) {
+        setFetching(true);
+
+        const whoami = await actor.whoami();
+        const userData = (await actor.getUserData())[0];
+
+        setWhoamiText(whoami + ", " + userData.name + ", " + userData.email);
+
+        if (userData) {
+          form.setValue("name", userData.name);
+          form.setValue("email", userData.email);
+        }
+
+        setFetching(false);
+      }
+    }
+    fetchData();
+  }, [isAuthenticated, actor]);
 
   return (
     <main>
@@ -70,62 +92,67 @@ function App() {
           </Button>
         </div>
         <p>{isAuthenticated ? "You are logged in" : "You are not logged in"}</p>
-        <Button
-          onClick={async () => {
-            console.log(actor);
-            const whoami = await actor.whoami();
-            const userData = (await actor.getUserData())[0];
-
-            console.log(userData);
-
-            setWhoamiText(
-              whoami + ", " + userData.name + ", " + userData.email
-            );
-          }}
-        >
-          Whoami
-        </Button>
-        <section id="whoami">{whoamiText.toString()}</section>
       </section>
 
       {isAuthenticated && (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="alex" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="alex@example.com" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public email address.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
+        <>
+          <Button
+            disabled={fetching}
+            onClick={async () => {
+              setFetching(true);
+              const whoami = await actor.whoami();
+              const userData = (await actor.getUserData())[0];
+
+              setWhoamiText(
+                whoami + ", " + userData.name + ", " + userData.email
+              );
+              setFetching(false);
+            }}
+          >
+            Whoami {fetching ? "..." : ""}
+          </Button>
+          <section id="whoami">{whoamiText.toString()}</section>
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="alex" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is your public display name.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="alex@example.com" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is your public email address.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={fetching}>
+                Submit
+              </Button>
+            </form>
+          </Form>
+        </>
       )}
     </main>
   );
