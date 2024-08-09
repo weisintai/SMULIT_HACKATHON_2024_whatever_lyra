@@ -134,6 +134,7 @@ export function useAuthClient(options?: UseAuthClientOptions) {
       setIsAuthenticated(false);
       setIdentity(null);
       await authClient.logout();
+      setIdentity(authClient.getIdentity());
 
       if (options?.actorOptions)
         setActor(await createActor(options?.actorOptions));

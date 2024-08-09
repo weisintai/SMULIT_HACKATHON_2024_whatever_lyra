@@ -1,25 +1,17 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useAuth } from "@/hooks/useAuth";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/lib/actor";
 
 export const Route = createFileRoute("/chat")({
-  beforeLoad: async ({ context, location }) => {
-    if (!context.isAuthenticated) {
-      throw redirect({
-        to: "/login",
-        search: {
-          // Use the current location to power a redirect after login
-          // (Do not use `router.state.resolvedLocation` as it can
-          // potentially lag behind the actual current location)
-          redirect: location.href,
-        },
-      });
-    }
-  },
   component: () => <Chat />,
 });
 
 const Chat = () => {
-  const { isAuthenticated, actor } = useAuth();
+  const { authenticated, identity } = useAuth();
+  const navigate = useNavigate();
+
+  if (identity !== null && !authenticated) {
+    navigate({ to: "/login", search: { redirect: "/chat" } });
+  }
 
   return (
     <div className="p-2">

@@ -1,39 +1,46 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  Link,
+  Outlet,
+  useRouter,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
+import { useAuth } from "@/lib/actor";
 
 export const Route = createRootRoute({
   component: () => <Root />,
 });
 
 const Root = () => {
-  const { isAuthenticated, login, logout } = useAuth();
+  const router = useRouter();
+  const { authenticated, logout } = useAuth();
 
   return (
     <>
-      {isAuthenticated && (
-        <>
-          <div className="p-2 flex gap-2 justify-between">
-            <div className="flex gap-2">
-              <Link to="/chat`" className="[&.active]:font-bold">
-                Chat
-              </Link>
-              <Link to="/dashboard" className="[&.active]:font-bold">
-                Dashboard
-              </Link>
-            </div>
-            {isAuthenticated && (
-              <Button onClick={() => logout()}>Logout</Button>
-            )}
-          </div>
-          {isAuthenticated && <p>You are authenticated</p>}
-          {!isAuthenticated && <p>You are not authenticated</p>}
-        </>
-      )}
+      <div className="p-2 flex gap-2 justify-between">
+        <div className="flex gap-2">
+          <Link to="/chat" className="[&.active]:font-bold">
+            Chat
+          </Link>
+          <Link to="/dashboard" className="[&.active]:font-bold">
+            Dashboard
+          </Link>
+        </div>
+        {authenticated && (
+          <Button
+            onClick={async () => {
+              await logout();
+              router.history.push("/login");
+            }}
+          >
+            Logout
+          </Button>
+        )}
+      </div>
 
       <Outlet />
-      <TanStackRouterDevtools initialIsOpen={false} />
     </>
   );
 };

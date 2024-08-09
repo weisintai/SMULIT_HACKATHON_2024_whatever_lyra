@@ -1,14 +1,11 @@
-import React, { StrictMode, createContext, useContext } from "react";
+import React, { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { useAuth, AuthProvider, AuthContext } from "./hooks/useAuth";
 import "./index.css";
+import { useAuth } from "@/lib/actor";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
-
-import { idlFactory, canisterId } from "../../declarations/lyra_backend";
-import { useAuthClient } from "./lib/use-auth-client";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -17,18 +14,20 @@ const router = createRouter({ routeTree });
 const rootElement = document.getElementById("root");
 
 function App() {
-  const isAuthenticated = useAuth().isAuthenticated;
+  const { authenticated, identity } = useAuth();
 
-  return <RouterProvider router={router} context={{ isAuthenticated }} />;
+  return identity !== null ? (
+    <RouterProvider router={router} context={{ authenticated }} />
+  ) : (
+    <>loading...</>
+  );
 }
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <App />
     </StrictMode>
   );
 }
