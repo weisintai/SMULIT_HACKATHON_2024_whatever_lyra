@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "setup": "npm i && dfx canister create lyra_backend && dfx generate lyra_backend && dfx deploy",
-    "start": "vite --port 3000 && npm run watch-routes",
+    "start": "tsr watch & vite --port 3000",
     "prebuild": "dfx generate",
-    "build": "tsc && npm run generate-routes && vite build",
+    "build": "tsc & npm run generate-routes && vite build",
     "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\"",
     "generate-routes": "tsr generate",
     "watch-routes": "tsr watch"
