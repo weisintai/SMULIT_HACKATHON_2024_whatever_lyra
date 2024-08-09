@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQueryCall } from "@/lib/actor";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/actor";
@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [consentToDataCollection, setConsentToDataCollection] = useState(null);
   const [userInputData, setUserInputData] = useState([]);
   const { authenticated, identity } = useAuth();
+  const navigate = useNavigate();
 
   if (identity !== null && !authenticated) {
     navigate({ to: "/login", search: { redirect: "/chat" } });
