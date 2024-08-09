@@ -79,82 +79,28 @@ function App() {
   }, [isAuthenticated, actor]);
 
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <section id="login-section">
-        <h2>Log in and test your identity</h2>
-        <div className="flex  gap-2">
-          <Button id="login" onClick={login}>
-            Login with Internet Identity
-          </Button>
-          <Button id="logout" onClick={logout}>
-            Logout
-          </Button>
-        </div>
-        <p>{isAuthenticated ? "You are logged in" : "You are not logged in"}</p>
-      </section>
+    <div className="bg-gray-900 text-white min-h-screen font-montserrat flex flex-col items-center justify-center">
+      {/* Background Bubbles */}
+      <div className="absolute top-14 left-14 w-60 h-60 bg-emerald-400 rounded-full opacity-60 animate-bubble-1"></div>
+      <div className="absolute bottom-4 left-3/4 w-65 h-65 bg-indigo-400 rounded-full opacity-60 animate-bubble-5"></div>
+      <div className="absolute top-2/4 right-1/3 w-20 h-20 bg-fuchsia-500 rounded-full opacity-60 animate-bubble-3"></div>
+      <div className="absolute bottom-24 right-2/3 w-40 h-40 bg-rose-500 rounded-full opacity-60 animate-bubble-2"></div>
+      <div className="absolute top-2/5 left-2/5 w-18 h-18 bg-violet-500 rounded-full opacity-60 animate-bubble-4"></div>
 
-      {isAuthenticated && (
-        <>
-          <Button
-            disabled={fetching}
-            onClick={async () => {
-              setFetching(true);
-              const whoami = await actor.whoami();
-              const userData = (await actor.getUserData())[0];
+      <div className="absolute w-55 h-55 bg-blue-300 rounded-full opacity-60 animate-bubble-1"></div>
+      <div className="absolute bottom-10 right-10 w-65 h-65 bg-teal-300 rounded-full opacity-60 animate-bubble-2"></div>
+      <div className="absolute top-20 left-20 w-30 h-30 bg-purple-300 rounded-full opacity-60 animate-bubble-3"></div>
+      <div className="absolute bottom-1/3 left-1/3 w-28 h-28 bg-yellow-300 rounded-full opacity-60 animate-bubble-4"></div>
+      <div className="absolute top-1/2 right-1/4 w-26 h-26 bg-pink-300 rounded-full opacity-60 animate-bubble-5"></div>
 
-              setWhoamiText(
-                whoami + ", " + userData.name + ", " + userData.email
-              );
-              setFetching(false);
-            }}
-          >
-            Whoami {fetching ? "..." : ""}
-          </Button>
-          <section id="whoami">{whoamiText.toString()}</section>
+      <div className="absolute w-55 h-55 bg-indigo-400 rounded-full opacity-60 animate-bubble-6"></div>
+      <div className="absolute bottom-10 right-10 w-55 h-55 bg-fuchsia-500 rounded-full opacity-60 animate-bubble-6"></div>
+      <div className="absolute top-20 left-20 w-30 h-30 bg-purple-300 rounded-full opacity-60 animate-bubble-7"></div>
+      <div className="absolute bottom-1/3 left-1/3 w-40 h-40 bg-yellow-300 rounded-full opacity-60 animate-bubble-8"></div>
+      <div className="absolute top-1/2 right-1/4 w-26 h-26 bg-pink-300 rounded-full opacity-60 animate-bubble-9"></div>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="alex" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="alex@example.com" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your public email address.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={fetching}>
-                Submit
-              </Button>
-            </form>
-          </Form>
-        </>
-      )}
-    </main>
+      <div className="absolute w-full h-full backdrop-blur-md isolate aspect-video bg-gray/20 shadow-lg ring-1 ring-black/5"></div>
+    </div>
   );
 }
 
