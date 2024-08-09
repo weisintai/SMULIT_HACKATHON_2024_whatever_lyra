@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useQueryCall, useUpdateCall } from "../lib/actor";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/chat")({
@@ -31,6 +31,8 @@ const Chat = () => {
     onSuccess: (data) => {
       setIsNewUser(data.length === 0);
 
+      console.log(data);
+
       if (data.length > 0) {
         setConsentToDataCollection(data[0].consentToDataCollection);
       }
@@ -48,6 +50,10 @@ const Chat = () => {
   if (identity !== null && !authenticated) {
     navigate({ to: "/login", search: { redirect: "/chat" } });
   }
+
+  useEffect(() => {
+    call();
+  }, []);
 
   return (
     <>
@@ -75,10 +81,10 @@ const Chat = () => {
                 <Button
                   disabled={consentToDataCollectionUpdating}
                   variant="secondary"
-                  onClick={() => {
+                  onClick={async () => {
                     setConsentToDataCollection(0n);
                     consentToDataCollectionCall();
-                    call();
+                    await call();
                   }}
                 >
                   No
@@ -88,11 +94,11 @@ const Chat = () => {
                 <Button
                   disabled={consentToDataCollectionUpdating}
                   variant="primary"
-                  onClick={() => {
+                  onClick={async () => {
                     setConsentToDataCollection(1n);
                     console.log(consentToDataCollection);
                     consentToDataCollectionCall();
-                    call();
+                    await call();
                   }}
                 >
                   Yes
