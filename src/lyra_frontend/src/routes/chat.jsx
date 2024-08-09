@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useQueryCall, useUpdateCall } from "../lib/actor";
+import { useQueryCall, useUpdateCall } from "@/lib/actor";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -30,8 +30,6 @@ const Chat = () => {
     refetchOnMount: false,
     onSuccess: (data) => {
       setIsNewUser(data.length === 0);
-
-      console.log(data);
 
       if (data.length > 0) {
         setConsentToDataCollection(data[0].consentToDataCollection);
