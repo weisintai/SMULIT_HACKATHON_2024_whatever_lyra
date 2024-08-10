@@ -9,6 +9,7 @@ import {
   RefreshCcwIcon,
   ArrowUpIcon,
 } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Define the structure of a chat message
 interface ChatMessage {
@@ -33,20 +34,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
       onSendMessage(inputMessage);
       setInputMessage("");
+
+      scrollToBottom();
     }
   };
 
   return (
     <div className="flex flex-col h-screen pt-10">
-      <div className="flex flex-col items-start flex-1 max-w-2xl gap-8 px-4 mx-auto overflow-y-auto ">
+      <div className="flex flex-col items-start flex-1 max-w-2xl gap-8 px-4 mx-auto overflow-y-scroll ">
         {messages.map((message, index) => (
           <div key={index} className="flex items-start gap-4">
             <Avatar className="w-6 h-6 border">

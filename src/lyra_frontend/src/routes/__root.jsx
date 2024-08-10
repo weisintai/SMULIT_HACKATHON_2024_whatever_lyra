@@ -21,7 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Toaster } from "@/components/ui/toaster";
 
 export const Route = createRootRoute({
   component: () => <Root />,
@@ -127,7 +127,7 @@ const Root = () => {
                       <div className="flex items-center space-x-2">
                         <Avatar>
                           <AvatarImage
-                            src={`https://vercel.com/api/www/avatar?teamId=${username}&s=44`}
+                            src={`https://vercel.com/api/www/avatar?teamId=lyra&s=44`}
                             alt="User avatar"
                           />
                           <AvatarFallback>U</AvatarFallback>
@@ -159,25 +159,8 @@ const Root = () => {
                   </Button>
                 </Link>
               </div>
-
-              {/* <div className="p-2 flex gap-2 justify-between">
-                <div className="flex gap-2">
-                  <Link to="/dashboard" className="[&.active]:font-bold">
-                    Dashboard
-                  </Link>
-                </div>
-
-                <Button
-                  onClick={async () => {
-                    await logout();
-                    navigate({ to: "/login" });
-                  }}
-                >
-                  Logout
-                </Button>
-              </div> */}
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col p-2 max-h-screen">
               <Outlet />
             </div>
           </div>
@@ -185,6 +168,8 @@ const Root = () => {
       ) : (
         <Outlet />
       )}
+
+      <Toaster />
     </>
   );
 };
