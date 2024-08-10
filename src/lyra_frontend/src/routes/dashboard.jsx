@@ -99,7 +99,7 @@ const Dashboard = () => {
           <p>Loading...</p>
         ) : (
           <>
-            <p>
+            <p className="px-8">
               You {consentToDataCollection === 1 ? "" : "don't"} consent to data
               collection.
             </p>

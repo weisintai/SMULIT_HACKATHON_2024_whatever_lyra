@@ -6,7 +6,6 @@ import {
   useNavigate,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { useAuth } from "@/lib/actor";
 import {
@@ -20,6 +19,17 @@ import {
   ThumbsUpIcon,
   ZapIcon,
 } from "@/components/ai-chat-example";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, Settings } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Route = createRootRoute({
   component: () => <Root />,
@@ -28,6 +38,8 @@ export const Route = createRootRoute({
 const Root = () => {
   const { authenticated, logout } = useAuth();
   const navigate = useNavigate();
+
+  const username = "lyra-ai";
 
   return (
     <>
@@ -61,7 +73,7 @@ const Root = () => {
                     </div>
                     <Link
                       to="/chat"
-                      className="flex-1 block p-2 overflow-hidden text-sm truncate transition-colors rounded-md whitespace-nowrap bg-muted/50"
+                      className="flex-1 block p-2 overflow-hidden text-sm truncate transition-colors rounded-md whitespace-nowrap [&.active]:bg-muted/50"
                     >
                       Airplane Turbulence: Sky&apos;s Rollercoaster
                     </Link>
@@ -115,11 +127,49 @@ const Root = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-2 flex gap-2 justify-between">
+
+              <div className="flex items-center justify-between  p-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button variant="ghost" className="p-0">
+                      <div className="flex items-center space-x-2">
+                        <Avatar>
+                          <AvatarImage
+                            src={`https://vercel.com/api/www/avatar?teamId=${username}&s=44`}
+                            alt="User avatar"
+                          />
+                          <AvatarFallback>U</AvatarFallback>
+                        </Avatar>
+                        <span className="mr-2">User</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <Link to="/dashboard">
+                      <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                    </Link>
+                    <DropdownMenuSeparator />
+                    <button
+                      className="w-full"
+                      onClick={async () => {
+                        await logout();
+                        navigate({ to: "/login" });
+                      }}
+                    >
+                      <DropdownMenuItem>Sign out</DropdownMenuItem>
+                    </button>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Link to="/settings">
+                  <Button variant="ghost" size="icon">
+                    <Settings className="h-5 w-5 text-gray-400" />
+                  </Button>
+                </Link>
+              </div>
+
+              {/* <div className="p-2 flex gap-2 justify-between">
                 <div className="flex gap-2">
-                  <Link to="/chat" className="[&.active]:font-bold">
-                    Chat
-                  </Link>
                   <Link to="/dashboard" className="[&.active]:font-bold">
                     Dashboard
                   </Link>
@@ -133,7 +183,7 @@ const Root = () => {
                 >
                   Logout
                 </Button>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col pt-10">
               <Outlet />
