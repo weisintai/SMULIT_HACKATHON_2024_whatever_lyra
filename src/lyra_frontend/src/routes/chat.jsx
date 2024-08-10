@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Camera, MessageSquare, Search, Settings } from "lucide-react";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { Textarea } from "@/components/ui/textarea";
 import ChatInterface from "@/components/chat-interface";
 
@@ -104,7 +104,9 @@ const Chat = () => {
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <div className="flex flex-col items-center justify-center h-full">
+          <LoadingSpinner className="w-6 h-6" />
+        </div>
       ) : (
         <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
       )}

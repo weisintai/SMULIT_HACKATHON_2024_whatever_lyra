@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQueryCall } from "@/lib/actor";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/actor";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 import { DataTable } from "@/components/dashboard/data-table";
 import { columns } from "@/components/dashboard/columns";
@@ -96,7 +97,9 @@ const Dashboard = () => {
     <div>
       <div className="p-2">
         {consentToDataCollection === null ? (
-          <p>Loading...</p>
+          <div className="flex flex-col items-center justify-center h-full">
+            <LoadingSpinner className="w-6 h-6" />
+          </div>
         ) : (
           <>
             <p className="px-8">
