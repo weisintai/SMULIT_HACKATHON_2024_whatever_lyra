@@ -20,20 +20,10 @@ import { useQueryCall, useUpdateCall } from "@/lib/actor";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Camera, MessageSquare, Search, Settings } from "lucide-react";
-import { ChatLayout } from "@/components/chat/chat-layout";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  ClipboardIcon,
-  PenIcon,
-  RefreshCcwIcon,
-  SparkleIcon,
-  ThumbsDownIcon,
-  ThumbsUpIcon,
-  ZapIcon,
-} from "@/components/ai-chat-example";
+
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowUpIcon } from "@/components/ai-chat-example";
 import ChatInterface from "@/components/chat-interface";
 
 export const Route = createFileRoute("/chat")({
@@ -113,16 +103,11 @@ const Chat = () => {
 
   return (
     <>
-      <div className="p-2">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ChatInterface
-            messages={messages}
-            onSendMessage={handleSendMessage}
-          />
-        )}
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
+      )}
 
       {isNewUser && (
         <AlertDialog open={isNewUser}>

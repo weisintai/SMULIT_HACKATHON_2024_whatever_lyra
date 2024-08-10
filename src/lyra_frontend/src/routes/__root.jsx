@@ -8,17 +8,8 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { useEffect } from "react";
 import { useAuth } from "@/lib/actor";
-import {
-  BotIcon,
-  ChevronDownIcon,
-  ClipboardIcon,
-  PenIcon,
-  RefreshCcwIcon,
-  SparkleIcon,
-  ThumbsDownIcon,
-  ThumbsUpIcon,
-  ZapIcon,
-} from "@/components/ai-chat-example";
+import { Bot, Pen } from "lucide-react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Settings } from "lucide-react";
@@ -30,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const Route = createRootRoute({
   component: () => <Root />,
@@ -54,13 +46,13 @@ const Root = () => {
                     className="justify-start w-full gap-2 px-2 text-left"
                   >
                     <div className="flex items-center justify-center rounded-full w-7 h-7 bg-primary text-primary-foreground">
-                      <BotIcon className="w-4 h-4" />
+                      <Bot className="w-4 h-4" />
                     </div>
                     <div className="overflow-hidden text-sm grow text-ellipsis whitespace-nowrap">
                       Lyra
                     </div>
                     <Button variant="icon">
-                      <PenIcon className="w-4 h-4" />
+                      <Pen className="w-4 h-4" />
                     </Button>
                   </Button>
                 </Link>
@@ -185,7 +177,7 @@ const Root = () => {
                 </Button>
               </div> */}
             </div>
-            <div className="flex flex-col pt-10">
+            <div className="flex flex-col">
               <Outlet />
             </div>
           </div>

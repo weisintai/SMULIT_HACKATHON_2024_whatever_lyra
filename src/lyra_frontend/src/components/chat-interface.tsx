@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +27,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onSendMessage,
 }) => {
   const [inputMessage, setInputMessage] = React.useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
@@ -36,8 +45,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-col items-start flex-1 max-w-2xl gap-8 px-4 mx-auto overflow-y-auto">
+    <div className="flex flex-col h-screen pt-10">
+      <div className="flex flex-col items-start flex-1 max-w-2xl gap-8 px-4 mx-auto overflow-y-auto ">
         {messages.map((message, index) => (
           <div key={index} className="flex items-start gap-4">
             <Avatar className="w-6 h-6 border">
@@ -93,6 +102,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className="max-w-2xl w-full sticky bottom-0 mx-auto py-2 flex flex-col gap-1.5 px-4 bg-background">
         <div className="relative">
